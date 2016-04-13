@@ -7,6 +7,8 @@ Description:
 Plugin URI: Update
 Author: Martin Wecke, HATSUMATSU
 Author URI: http://hatsumatsu.de/
+GitHub Plugin URI: https://github.com/hatsumatsu/hm-network-auto-post-addon-hm-attachments
+GitHub Branch: master
 */
 
 
