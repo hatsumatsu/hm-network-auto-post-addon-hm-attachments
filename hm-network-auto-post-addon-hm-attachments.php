@@ -2,9 +2,9 @@
 
 /*
 Plugin Name: HM Network Auto Post Addon: HM Attachments
-Version: 0.1
-Description: 
-Plugin URI: Update
+Version: 0.11
+Description: Addon wo suport HM Attachments
+Plugin URI: 
 Author: Martin Wecke, HATSUMATSU
 Author URI: http://hatsumatsu.de/
 GitHub Plugin URI: https://github.com/hatsumatsu/hm-network-auto-post-addon-hm-attachments
