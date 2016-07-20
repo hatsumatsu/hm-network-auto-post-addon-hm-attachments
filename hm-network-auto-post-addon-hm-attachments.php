@@ -2,7 +2,7 @@
 
 /*
 Plugin Name: HM Network Auto Post Addon: HM Attachments
-Version: 0.12
+Version: 0.13
 Description: Addon for HM Network Auto Post to support HM Attachments.
 Plugin URI: 
 Author: Martin Wecke
