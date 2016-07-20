@@ -43,18 +43,23 @@ class HMNetworkAutoPostHMAttachments {
 	 * @param  int $target_post_id post ID of the target post
 	 */
 	public function createPost( $source_site_id, $target_site_id, $source_post_id, $target_post_id ) {
-		$this->writeLog( 'createPost()' );
-		$this->writeLog( 'source_site_id: ' . $source_site_id );
-		$this->writeLog( 'target_site_id: ' . $target_site_id );
-		$this->writeLog( 'source_post_id: ' . $source_post_id );
-		$this->writeLog( 'target_post_id: ' . $target_post_id );		
+		$this->writeLog( 'createPost()' );		
+
+		$source_post = get_post( $source_post_id );
 
 		// quit if post is post revisions
 		if( wp_is_post_revision( $source_post_id ) ) {
 			return;
 		}
 
-		$this->setHMAttachments( $source_site_id, $target_site_id, $source_post_id, $target_post_id );		
+		// quit if post is trash or auto draft
+		if( $source_post->post_status == 'trash' || $source_post->post_status == 'draft' || $source_post->post_status == 'auto-draft' ) {
+			return;
+		}		
+
+		if( array_key_exists( 'hm-attachments', $this->settings[get_post_type( $source_post_id )] ) && $this->settings[get_post_type( $source_post_id )]['hm-attachments'] ) {
+			$this->setHMAttachments( $source_site_id, $target_site_id, $source_post_id, $target_post_id );
+		}
 	}
 
 
@@ -66,22 +71,24 @@ class HMNetworkAutoPostHMAttachments {
 	 * @param  int $target_post_id post ID of the target post
 	 */
 	public function savePost( $source_site_id, $target_site_id, $source_post_id, $target_post_id ) {
+		$this->writeLog( 'savePost()' );
+
+		$source_post = get_post( $source_post_id ); 
+
 		// quit if post is post revisions
 		if( wp_is_post_revision( $source_post_id ) ) {
 			return;
 		}
 
-		if( array_key_exists( 'hm-attachments', $this->settings[get_post_type( $source_post_id )]['permanent'] ) && $this->settings[get_post_type( $source_post_id )]['permanent']['hm-attachments'] ) {
-			$this->writeLog( 'savePost()' );
-			$this->writeLog( 'source_site_id: ' . $source_site_id );
-			$this->writeLog( 'target_site_id: ' . $target_site_id );
-			$this->writeLog( 'source_post_id: ' . $source_post_id );
-			$this->writeLog( 'target_post_id: ' . $target_post_id );
+		// quit if post is trash or auto draft
+		if( $source_post->post_status == 'trash' || $source_post->post_status == 'draft' || $source_post->post_status == 'auto-draft' ) {
+			return;
+		}		
 
+		if( array_key_exists( 'hm-attachments', $this->settings[get_post_type( $source_post_id )]['permanent'] ) && $this->settings[get_post_type( $source_post_id )]['permanent']['hm-attachments'] ) {
 			$this->setHMAttachments( $source_site_id, $target_site_id, $source_post_id, $target_post_id );
 		}
 	}
-
 
 
 	/**
@@ -170,9 +177,9 @@ class HMNetworkAutoPostHMAttachments {
 	public function writeLog( $log )  {
 	    if( true === WP_DEBUG ) {
 	        if( is_array( $log ) || is_object( $log ) ) {
-	            error_log( 'hmnaphma: ' . print_r( $log, true ) . "\n", 3, trailingslashit( ABSPATH ) . 'wp-content/debuglog.log' );
+	            error_log( 'Attachments Addon: ' . print_r( $log, true ) . "\n", 3, trailingslashit( ABSPATH ) . 'wp-content/debuglog.log' );
 	        } else {
-	            error_log( 'hmnaphma: ' . $log . "\n", 3, trailingslashit( ABSPATH ) . 'wp-content/debuglog.log' );
+	            error_log( 'Attachments Addon: ' . $log . "\n", 3, trailingslashit( ABSPATH ) . 'wp-content/debuglog.log' );
 	        }
 	    }
 	}
